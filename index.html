@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accel Elite — Private Event Invitation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0904;
+    --ink-2:#141009;
+    --ivory:#f4ecd8;
+    --ivory-dim:#cfc4a8;
+    --gold:#c9a227;
+    --gold-bright:#e6c667;
+    --line:rgba(201,162,39,.32);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:
+      radial-gradient(ellipse 90% 60% at 50% -10%, rgba(201,162,39,.10), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 50% 110%, rgba(201,162,39,.07), transparent 60%),
+      var(--ink);
+    color:var(--ivory);
+    font-family:'Cormorant Garamond', serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .serif-display{font-family:'Cinzel', serif;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:64px 24px 48px;
+    position:relative;
+  }
+  .mark{
+    width:64px; height:64px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:28px;
+    animation:fadeUp 1s ease both;
+  }
+  .mark svg{width:26px; height:26px;}
+  .eyebrow{
+    font-family:'Cinzel', serif;
+    font-size:11px;
+    letter-spacing:.32em;
+    color:var(--gold);
+    margin-bottom:22px;
+    animation:fadeUp 1s .1s ease both;
+  }
+  .hero h1{
+    font-size:clamp(40px, 9vw, 74px);
+    line-height:1.08;
+    font-weight:500;
+    color:var(--ivory);
+    animation:fadeUp 1s .2s ease both;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--gold-bright);
+  }
+  .rule{
+    width:64px; height:1px;
+    background:var(--line);
+    margin:26px auto;
+  }
+  .event-name{
+    font-size:clamp(20px, 3.4vw, 27px);
+    font-style:italic;
+    font-weight:500;
+    color:var(--ivory);
+    animation:fadeUp 1s .3s ease both;
+  }
+  .event-meta{
+    margin-top:14px;
+    font-family:'Cinzel', serif;
+    font-size:12px;
+    letter-spacing:.14em;
+    color:var(--ivory-dim);
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px 14px;
+    justify-content:center;
+    animation:fadeUp 1s .4s ease both;
+  }
+  .event-meta span:not(:last-child)::after{
+    content:'·';
+    margin-left:14px;
+    color:var(--gold);
+  }
+  .hero p.lede{
+    max-width:440px;
+    margin-top:32px;
+    font-size:19px;
+    line-height:1.65;
+    color:var(--ivory-dim);
+    animation:fadeUp 1s .5s ease both;
+  }
+  .hero-cta{
+    margin-top:38px;
+    animation:fadeUp 1s .6s ease both;
+  }
+  .btn-gold{
+    display:inline-block;
+    font-family:'Cinzel', serif;
+    font-size:12px;
+    letter-spacing:.16em;
+    color:var(--ink);
+    background:linear-gradient(180deg, var(--gold-bright), var(--gold));
+    padding:16px 34px;
+    border-radius:2px;
+    text-decoration:none;
+    border:none;
+    cursor:pointer;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .btn-gold:hover{ transform:translateY(-2px); box-shadow:0 10px 24px rgba(201,162,39,.25); }
+  .btn-gold:disabled{ opacity:.6; cursor:default; transform:none; box-shadow:none; }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ---------- Register section ---------- */
+  .register{
+    max-width:480px;
+    margin:0 auto;
+    padding:70px 24px 100px;
+    position:relative;
+  }
+  .register-head{ text-align:center; margin-bottom:44px; }
+  .register-head h2{
+    font-family:'Cinzel', serif;
+    font-size:22px;
+    letter-spacing:.06em;
+    font-weight:500;
+    color:var(--ivory);
+    margin-bottom:12px;
+  }
+  .register-head p{
+    color:var(--ivory-dim);
+    font-size:17px;
+    line-height:1.6;
+  }
+
+  .field{ margin-bottom:24px; }
+  .field label{
+    display:block;
+    font-family:'Cinzel', serif;
+    font-size:11px;
+    letter-spacing:.12em;
+    color:var(--ivory-dim);
+    margin-bottom:9px;
+  }
+  .field label .req{ color:var(--gold); }
+  .field input, .field select{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--line);
+    color:var(--ivory);
+    font-family:'Cormorant Garamond', serif;
+    font-size:18px;
+    padding:9px 2px;
+    outline:none;
+    transition:border-color .2s ease;
+    appearance:none;
+    -webkit-appearance:none;
+    border-radius:0;
+  }
+  .field select{
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a227' stroke-width='1.4' fill='none'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;
+    background-position:right 4px center;
+  }
+  .field select option{ background:var(--ink-2); color:var(--ivory); }
+  .field input::placeholder{ color:rgba(207,196,168,.4); }
+  .field input:focus, .field select:focus{ border-color:var(--gold); }
+
+  .submit-row{ margin-top:38px; text-align:center; }
+  .submit-row .btn-gold{ width:100%; padding:17px; }
+  .form-note{
+    margin-top:16px;
+    font-size:14px;
+    color:var(--ivory-dim);
+    text-align:center;
+    min-height:20px;
+  }
+  .form-note.error{ color:#e08a6a; }
+
+  /* ---------- Success state ---------- */
+  .success{
+    max-width:480px;
+    margin:0 auto;
+    padding:110px 24px 130px;
+    text-align:center;
+    display:none;
+  }
+  .success.show{ display:block; animation:fadeUp .7s ease both; }
+  .check{
+    width:68px; height:68px;
+    border-radius:50%;
+    border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 30px;
+  }
+  .check svg{ width:26px; height:26px; }
+  .success h2{
+    font-family:'Cinzel', serif;
+    font-size:26px;
+    letter-spacing:.03em;
+    font-weight:500;
+    color:var(--ivory);
+    margin-bottom:16px;
+  }
+  .success p{
+    color:var(--ivory-dim);
+    font-size:18px;
+    line-height:1.7;
+    max-width:380px;
+    margin:0 auto 38px;
+  }
+
+  /* ---------- Footer ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 24px 44px;
+    text-align:center;
+  }
+  footer .wordmark{
+    font-family:'Cinzel', serif;
+    font-size:13px;
+    letter-spacing:.24em;
+    color:var(--gold);
+    margin-bottom:10px;
+  }
+  footer p{
+    font-size:14px;
+    color:var(--ivory-dim);
+  }
+  footer a{ color:var(--ivory-dim); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="mark">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#c9a227" stroke-width="1.1"><path d="M12 2 L20 20 L12 16 L4 20 Z"/></svg>
+  </div>
+  <div class="eyebrow">Private Event</div>
+  <h1 class="serif-display">You're<br><em>Invited</em></h1>
+  <div class="rule"></div>
+  <!-- Edit event name / date / venue below -->
+  <div class="event-name">An Evening at Ritchie House</div>
+  <div class="event-meta">
+    <span>Saturday, 14 November 2026</span>
+    <span>7:00 PM</span>
+    <span>Ritchie House, Kuala Lumpur</span>
+  </div>
+  <p class="lede">A private gathering for Accel Elite members and their guests — an evening of conversation, recovery and quiet company. Places are limited and by registration only.</p>
+  <div class="hero-cta">
+    <a href="#register" class="btn-gold">Register Your Interest</a>
+  </div>
+</section>
+
+<section class="register" id="register">
+  <div class="register-head">
+    <h2>Register Your Interest</h2>
+    <p>Let us know you're coming. Our team will follow up with the full details.</p>
+  </div>
+
+  <form id="rsvpForm" autocomplete="on">
+    <div class="field">
+      <label for="name">Full Name <span class="req">*</span></label>
+      <input type="text" id="name" name="name" placeholder="Your full name" required>
+    </div>
+    <div class="field">
+      <label for="email">Email Address <span class="req">*</span></label>
+      <input type="email" id="email" name="email" placeholder="you@email.com" required>
+    </div>
+    <div class="field">
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" placeholder="012-345 6789">
+    </div>
+    <div class="field">
+      <label for="company">Company / Organisation</label>
+      <input type="text" id="company" name="company" placeholder="Optional">
+    </div>
+    <div class="field">
+      <label for="guests">Number of Guests</label>
+      <select id="guests" name="guests">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+      </select>
+    </div>
+
+    <div class="submit-row">
+      <button type="submit" class="btn-gold" id="submitBtn">Register Your Interest</button>
+      <div class="form-note" id="formNote"></div>
+    </div>
+  </form>
+</section>
+
+<section class="success" id="success">
+  <div class="check">
+    <svg viewBox="0 0 24 24" fill="none" stroke="#c9a227" stroke-width="1.4"><path d="M4 12.5 L9.5 18 L20 6"/></svg>
+  </div>
+  <h2 class="serif-display">You're On The List</h2>
+  <p>Thank you for registering. Our team will be in touch with the final details closer to the date.</p>
+  <a href="https://accel-elite.asia" class="btn-gold" target="_blank" rel="noopener">Explore Accel Elite</a>
+</section>
+
+<footer>
+  <div class="wordmark">ACCEL ELITE</div>
+  <p>Questions? <a href="mailto:enquiry@accel-elite.asia">enquiry@accel-elite.asia</a></p>
+</footer>
+
+<script>
+  const ENDPOINT = "https://script.google.com/macros/s/AKfycbxMTl71PuZkvEOje0iW6PC4P4EnsRev2onuD8AUdlGHH7WVTWaNkJPSlTmIeg4RicQ1ZA/exec";
+
+  const form = document.getElementById('rsvpForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const formNote = document.getElementById('formNote');
+  const registerSection = document.getElementById('register');
+  const successSection = document.getElementById('success');
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    formNote.classList.remove('error');
+    formNote.textContent = '';
+
+    const name = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    if(!name || !email){
+      formNote.textContent = 'Please fill in your name and email.';
+      formNote.classList.add('error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Registering…';
+
+    const data = new FormData();
+    data.append('name', name);
+    data.append('email', email);
+    data.append('phone', document.getElementById('phone').value.trim());
+    data.append('company', document.getElementById('company').value.trim());
+    data.append('guests', document.getElementById('guests').value);
+
+    fetch(ENDPOINT, { method: 'POST', body: data })
+      .then(function(res){ return res.json().catch(function(){ return {result:'success'}; }); })
+      .then(function(){
+        registerSection.style.display = 'none';
+        successSection.classList.add('show');
+        window.scrollTo({ top: successSection.offsetTop - 40, behavior: 'smooth' });
+      })
+      .catch(function(){
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Register Your Interest';
+        formNote.textContent = 'Something went wrong. Please try again.';
+        formNote.classList.add('error');
+      });
+  });
+</script>
+
+</body>
+</html>
