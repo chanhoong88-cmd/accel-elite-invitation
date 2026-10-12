@@ -252,12 +252,122 @@
   }
   footer a{ color:var(--ivory-dim); }
 
+
+  /* ---------- Opening invitation animation ---------- */
+  body.intro-on{ overflow:hidden; }
+  body.intro-on .hero, body.intro-on .hero *{ animation-play-state:paused !important; }
+  .intro{
+    position:fixed; inset:0; z-index:1000;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    background:
+      radial-gradient(ellipse 80% 55% at 50% 45%, rgba(201,162,39,.10), transparent 65%),
+      var(--ink);
+    cursor:pointer;
+    transition:opacity .9s ease, visibility .9s ease;
+  }
+  .intro.done{ opacity:0; visibility:hidden; }
+  .env{
+    position:relative;
+    width:min(360px, 82vw);
+    aspect-ratio:1.5;
+    perspective:1400px;
+    opacity:0; transform:translateY(18px);
+    animation:envIn 1s .2s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  @keyframes envIn{ to{ opacity:1; transform:none; } }
+  .env-back, .env-pocket, .env-flap{
+    position:absolute; inset:0;
+    transition:opacity .8s ease, transform .9s cubic-bezier(.5,0,.2,1);
+  }
+  .env-back{
+    background:linear-gradient(160deg, #2c2115, #1c150c);
+    border:1px solid var(--line);
+    box-shadow:0 30px 60px rgba(0,0,0,.55);
+  }
+  /* gold hairline edges on the clipped shapes */
+  .env-pocket, .env-flap{ filter:drop-shadow(0 0 .6px rgba(230,198,103,.75)); }
+  .env-pocket{ z-index:3; }
+  .env-pocket i{
+    position:absolute; inset:0;
+    background:linear-gradient(0deg, #2a1f13, #33271a);
+    clip-path:polygon(0 0, 50% 54%, 100% 0, 100% 100%, 0 100%);
+  }
+  .env-flap{ z-index:4; transform-origin:50% 0; transform-style:preserve-3d; }
+  .env-flap i{
+    position:absolute; inset:0;
+    background:linear-gradient(180deg, #3a2c1c, #2a1f13);
+    clip-path:polygon(0 0, 100% 0, 50% 58%);
+  }
+  .seal{
+    position:absolute; left:50%; top:58%; z-index:5;
+    width:58px; height:58px; margin:-29px 0 0 -29px;
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #1d160d, var(--ink));
+    border:1px solid var(--gold);
+    box-shadow:0 0 0 4px rgba(201,162,39,.12), 0 6px 16px rgba(0,0,0,.5);
+    display:flex; align-items:center; justify-content:center;
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .seal img{ width:22px; height:auto; }
+  .inv-card{
+    position:absolute; z-index:2;
+    left:5%; right:5%; top:7%; height:86%;
+    background:linear-gradient(170deg, #f7f0de, #ece0c2);
+    color:#2a1f13;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    transition:transform 1s cubic-bezier(.3,.1,.2,1);
+  }
+  .inv-card::before{
+    content:''; position:absolute; inset:8px;
+    border:1px solid rgba(201,162,39,.7);
+    pointer-events:none;
+  }
+  .inv-card .k{ font-family:'Cinzel', serif; font-size:10px; letter-spacing:.34em; color:#9c7c1c; }
+  .inv-card .t{ font-style:italic; font-size:clamp(22px, 6.4vw, 28px); margin:8px 0 10px; }
+  .inv-card .r{ width:36px; height:1px; background:#c9a227; margin-bottom:10px; }
+  .inv-card .p{ font-family:'Cinzel', serif; font-size:8.5px; letter-spacing:.24em; color:#5a4a33; }
+  .intro .skip{
+    position:absolute; bottom:28px;
+    font-family:'Cinzel', serif; font-size:10px; letter-spacing:.3em;
+    color:var(--ivory-dim); opacity:0;
+    animation:envIn 1s 1.2s ease forwards;
+  }
+  /* stages */
+  .intro.unseal .seal{ opacity:0; transform:scale(.85); }
+  .intro.open .env-flap{ transform:rotateX(180deg); }
+  .intro.flap-back .env-flap{ z-index:1; }
+  .intro.rise .inv-card{ transform:translateY(-52%); }
+  .intro.present .inv-card{ z-index:6; transform:translateY(0) scale(1.18); }
+  .intro.present .env-back,
+  .intro.present .env-pocket,
+  .intro.present .env-flap{ opacity:0; transform:translateY(40px); }
+  .intro.present .env-flap{ transform:rotateX(180deg) translateY(-40px); }
+
   @media (prefers-reduced-motion: reduce){
     *{ animation:none !important; transition:none !important; }
   }
 </style>
 </head>
 <body>
+
+<!-- Opening invitation animation (tap to skip) -->
+<div class="intro" id="intro" aria-hidden="true">
+  <div class="env">
+    <div class="env-back"></div>
+    <div class="inv-card">
+      <div class="k">Accel House</div>
+      <div class="t">A Private Invitation</div>
+      <div class="r"></div>
+      <div class="p">Ritchie Clubhouse · Kuala Lumpur</div>
+    </div>
+    <div class="env-pocket"><i></i></div>
+    <div class="env-flap"><i></i></div>
+    <div class="seal"><img id="sealLogo" alt=""></div>
+  </div>
+  <div class="skip">Tap to open</div>
+</div>
 
 <section class="hero">
   <div class="mark">
@@ -376,5 +486,32 @@
   });
 </script>
 
+<script>
+(function(){
+  var intro = document.getElementById('intro');
+  if(!intro) return;
+  var body = document.body;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var logo = document.querySelector('.mark img');
+  if(logo) document.getElementById('sealLogo').src = logo.src;
+  var timers = [];
+  function finish(){
+    timers.forEach(clearTimeout);
+    intro.classList.add('done');
+    body.classList.remove('intro-on');
+    setTimeout(function(){ if(intro.parentNode) intro.parentNode.removeChild(intro); }, 950);
+  }
+  if(reduce){ intro.parentNode.removeChild(intro); return; }
+  body.classList.add('intro-on');
+  function at(ms, cls){ timers.push(setTimeout(function(){ intro.classList.add(cls); }, ms)); }
+  at(1500, 'unseal');
+  at(1900, 'open');
+  at(2300, 'flap-back');
+  at(2700, 'rise');
+  at(3900, 'present');
+  timers.push(setTimeout(finish, 5600));
+  intro.addEventListener('click', finish);
+})();
+</script>
 </body>
 </html>
