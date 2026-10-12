@@ -308,7 +308,7 @@
     </div>
 
     <div class="submit-row">
-      <button type="submit" class="btn-gold" id="submitBtn">Register Your Interest</button>
+      <button type="submit" class="btn-gold" id="submitBtn">Submit</button>
       <div class="form-note" id="formNote"></div>
     </div>
   </form>
@@ -369,7 +369,7 @@
       })
       .catch(function(){
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Register Your Interest';
+        submitBtn.textContent = 'Submit';
         formNote.textContent = 'Something went wrong. Please try again.';
         formNote.classList.add('error');
       });
